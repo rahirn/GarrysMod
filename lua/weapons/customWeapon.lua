@@ -40,7 +40,7 @@ function setViewModel(ply, cmd, args)
 	viewModel = args[1]
 	ply:StripWeapon("customWeapon")
 	ply:Give("customWeapon")
-	SWEP:ViewModel = "weapons/models/v_pistol.mdl"
+	---SWEP:ViewModel = "weapons/models/v_pistol.mdl"
 	ply:SelectWeapon("customWeapon")
 end
 
