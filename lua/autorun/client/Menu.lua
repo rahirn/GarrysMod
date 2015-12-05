@@ -1,8 +1,47 @@
+function optionSelected(option, selection)
+	if     option == "worldModel" then
+	
+	elseif option == "viewModel" then
+	
+	elseif option == "scope" then
+	
+	elseif option == "clip" then
+	
+	elseif option == "pAuto" then
+	
+	elseif option == "pFire" then
+	
+	elseif option == "pSpeed" then
+	
+	elseif option == "pSound" then
+	
+	elseif option == "pDamage" then
+	
+	elseif option == "pSpread" then
+	
+	elseif option == "pRounds" then
+	
+	elseif option == "sAuto" then
+	
+	elseif option == "sFire" then
+	
+	elseif option == "sSpeed" then
+	
+	elseif option == "sSound" then
+	
+	elseif option == "sDamage" then
+	
+	elseif option == "sSpread" then
+	
+	elseif option == "sRounds" then
+	
+	end
+end
+
 function openMenu()
 	local WIDTH = .6
 	local HEIGHT = .8
-
-
+	
 	local menuFrame = vgui.Create("DFrame")
 	menuFrame:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT)
 	menuFrame:Center()
@@ -24,17 +63,12 @@ function openMenu()
 	botRightPanel:SetPos((ScrW() * WIDTH * .5) + 3, 30 + (ScrH() * HEIGHT * .25))
 	botRightPanel:SetSize((ScrW() * WIDTH * .5) - 3, ((ScrH() * HEIGHT) * .75) - 30)
 	
-	
-	
-	
 	local topProperties = vgui.Create("DProperties", topPanel)
 	topProperties:Dock(FILL)
 	local botLeftProperties = vgui.Create("DProperties", botLeftPanel)
 	botLeftProperties:Dock(FILL)
 	local botRightProperties = vgui.Create("DProperties", botRightPanel)
 	botRightProperties:Dock(FILL)
-	
-	
 	
 	--World Model------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "World Model")
@@ -46,7 +80,7 @@ function openMenu()
 		end
 	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -58,7 +92,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -70,7 +104,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -79,11 +113,10 @@ function openMenu()
 	--Primary Auto-----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
-	
 	weaponModel:AddChoice("Yes", {"YES"})
 	weaponModel:AddChoice("No", {"NO"})
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -94,9 +127,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -107,9 +139,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -121,7 +152,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -132,9 +163,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -145,9 +175,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -158,9 +187,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -171,9 +199,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -182,11 +209,10 @@ function openMenu()
 	--Secondary Auto-----------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
-	
 	weaponModel:AddChoice("Yes", {"YES"})
 	weaponModel:AddChoice("No", {"NO"})
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -197,9 +223,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -210,9 +235,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -224,7 +248,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -235,9 +259,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -248,9 +271,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -261,9 +283,8 @@ function openMenu()
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
-		
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: " .. data[1])
+		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
 	
