@@ -3,13 +3,16 @@ function GivePlayerAWeapon( ply, cmd, args )
 		ply:SetJumpPower(1500)
 	elseif args[1] == "reset" then
 		ply:SetJumpPower(200)
-	else then
+	else
 		ply:Give(args[1])
 		ply:SelectWeapon(args[1])
 		ply:ChatPrint("You got a " .. args[1])
 	end
 end --close our function
- 
-concommand.Add("doStuff", GivePlayerAWeapon)
 
-RunConsoleCommand("bind t selectweapon")
+function newWeapon( ply, cmd, args )
+	weapon = SWEP:new()
+end
+
+concommand.Add("doStuff", GivePlayerAWeapon)
+concommand.Add("newWeapon", newWeapon)

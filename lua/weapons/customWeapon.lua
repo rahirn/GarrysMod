@@ -1,6 +1,6 @@
-SWEP.PrintName = "Chair Thrower"
-SWEP.Author = "Riley Hirn"
-SWEP.Insructions = "Left mouse to fire a chair!"
+SWEP.PrintName = "Custom Weapon"
+SWEP.Author = "BF, RH, JJ, TT"
+SWEP.Insructions = "Do stuff."
 
 SWEP.Spawnable = true
 SWEP.AdminOnly = true
@@ -21,6 +21,9 @@ SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = true
 SWEP.ViewModel			= "models/weapons/v_rpg.mdl"
 SWEP.WorldModel			= "models/weapons/w_rocket_launcher.mdl"
+
+local viewModel = "models/weapons/v_rpg.mdl"
+local worldModel = "models/weapons/w_rocket_launcher.mdl"
 local primaryShot = "models/props_c17/doll01.mdl"
 local secondaryShot = "models/props_c17/doll01.mdl"
 local primarySound = Sound( "ambient/explosions/exp1.wav" )
@@ -33,17 +36,27 @@ local primaryshotsPerRound = 1
 local secondaryshotsPerRound = 1
 
 
-function setViewModel(model)
-	SWEP.ViewModel = model
+function setViewModel(ply, cmd, args)
+	viewModel = args[1]
+	ply:StripWeapon("customWeapon")
+	ply:Give("customWeapon")
+	SWEP:ViewModel = "weapons/models/v_pistol.mdl"
+	ply:SelectWeapon("customWeapon")
 end
 
-function setWorldModel(model)
-	SWEP.WorldModel = model
+concommand.Add("custom-setViewModel", setViewModel)
+
+function setWorldModel(ply, cmd, args)
+	SWEP.WorldModel = args[1]
 end
 
-function setPrimaryProjectile(model)
-	primaryShot = model
+concommand.Add("custom-setWorldModel", setWorldModel)
+
+function setPrimaryProjectile(ply, cmd, args)
+	primaryShot = args[1]
 end
+
+concommand.Add("custom-setPrimaryProjectile", setPrimaryProjectile)
 
 function setPrimary(ammo, clipsize, defaultclip, automatic, proj, sound, firerate, speed, shots)
 	setPrimaryAmmo(ammo or "none")
@@ -54,40 +67,56 @@ function setPrimary(ammo, clipsize, defaultclip, automatic, proj, sound, firerat
 	setPrimarySound(sound or "ambient/explosions/exp1.wav")
 	setPrimaryFireRate(firerate or 0.1)
 	setPrimaryProjectileSpeed(speed or 5000)
-	setPrimaryShotsperRound = shots;
+	setPrimaryShotsperRound(shots);
 end
 
-function setPrimaryAmmo(ammo)
-	SWEP.Primary.Ammo = ammo
+function setPrimaryAmmo(ply, cmd, args)
+	SWEP.Primary.Ammo = args[1]
 end
 
-function setPrimaryClip(size)
-	SWEP.Primary.ClipSize = size
+concommand.Add("custom-setPrimaryAmmo", setPrimaryAmmo)
+
+function setPrimaryClip(ply, cmd, args)
+	SWEP.Primary.ClipSize = args[1]
 end
 
-function setPrimaryDefaultClip(size)
-	SWEP.Primary.DefaultClip = size
+concommand.Add("custom-setPrimaryClip", setPrimaryClip)
+
+function setPrimaryDefaultClip(ply, cmd, args)
+	SWEP.Primary.DefaultClip = args[1]
 end
 
-function setPrimaryAutomatic(auto)
-	SWEP.Primary.Automatic = auto
+concommand.Add("custom-setPrimaryDefaultClip", setPrimaryDefaultClip)
+
+function setPrimaryAutomatic(ply, cmd, args)
+	SWEP.Primary.Automatic = args[1]
 end
 
-function setPrimarySound(sound)
-	primarySound = sound
+concommand.Add("custom-setPrimaryAutomatic", setPrimaryAutomatic)
+
+function setPrimarySound(ply, cmd, args)
+	primarySound = args[1]
 end
 
-function setPrimaryFireRate(rate)
-	primaryfireRate = rate;
+concommand.Add("custom-setPrimarySound", setPrimarySound)
+
+function setPrimaryFireRate(ply, cmd, args)
+	primaryfireRate = args[1]
 end
 
-function setPrimaryProjectileSpeed(speed)
-	primaryProjectileSpeed = speed
+concommand.Add("custom-setPrimaryFireRate", setPrimaryFireRate)
+
+function setPrimaryProjectileSpeed(ply, cmd, args)
+	primaryProjectileSpeed = args[1]
 end
 
-function setPrimaryShotsperRound(shots)
-	primaryshotsPerRound = shots
+concommand.Add("custom-setPrimaryProjectileSpeed", setPrimaryProjectileSpeed)
+
+function setPrimaryShotsperRound(ply, cmd, args)
+	primaryshotsPerRound = args[1]
 end
+
+concommand.Add("custom-setPrimaryShotsperRound", setPrimaryShotsperRound)
 
 function setSecondary(ammo, clipsize, defaultclip, automatic, proj, sound, firerate, speed, shots)
 	setSecondaryAmmo(ammo or "none")
@@ -101,41 +130,53 @@ function setSecondary(ammo, clipsize, defaultclip, automatic, proj, sound, firer
 	setSecondaryShotsperRound = shots
 end
 
-function setSecondaryAmmo(ammo)
-	SWEP.Secondary.Ammo = ammo
+function setSecondaryAmmo(ply, cmd, args)
+	SWEP.Secondary.Ammo = args[1]
 end
 
-function setSecondaryClip(size)
-	SWEP.Secondary.ClipSize = size
+concommand.Add("custom-setSecondaryAmmo", setSecondaryAmmo)
+
+function setSecondaryClip(ply, cmd, args)
+	SWEP.Secondary.ClipSize = args[1]
 end
 
-function setSecondaryDefaultClip(size)
-	SWEP.Secondary.DefaultClip = size
+concommand.Add("custom-setSecondaryClip", setSecondaryClip)
+
+function setSecondaryDefaultClip(ply, cmd, args)
+	SWEP.Secondary.DefaultClip = args[1]
 end
 
-function setSecondaryAutomatic(auto)
-	SWEP.Secondary.Automatic = auto
+concommand.Add("custom-setSecondaryDefaultClip", setSecondaryDefaultClip)
+
+function setSecondaryAutomatic(ply, cmd, args)
+	SWEP.Secondary.Automatic = args[1]
 end
 
-function setSecondaryProjectile(model)
-	secondaryShot = model
+concommand.Add("custom-setSecondaryAutomatic", setSecondaryAutomatic)
+
+function setSecondarySound(ply, cmd, args)
+	SecondarySound = args[1]
 end
 
-function setSecondarySound(sound)
-	secondarySound = sound
+concommand.Add("custom-setSecondarySound", setSecondarySound)
+
+function setSecondaryFireRate(ply, cmd, args)
+	SecondaryfireRate = args[1]
 end
 
-function setSecondaryFireRate(rate)
-	secondaryfireRate = rate
+concommand.Add("custom-setSecondaryFireRate", setSecondaryFireRate)
+
+function setSecondaryProjectileSpeed(ply, cmd, args)
+	SecondaryProjectileSpeed = args[1]
 end
 
-function setSecondaryProjectileSpeed(speed)
-	secondaryProjectileSpeed = speed
+concommand.Add("custom-setSecondaryProjectileSpeed", setSecondaryProjectileSpeed)
+
+function setSecondaryShotsperRound(ply, cmd, args)
+	SecondaryshotsPerRound = args[1]
 end
 
-function setSecondaryShotsperRound(shots)
-	secondaryshotsPerRound = shots
-end
+concommand.Add("custom-setSecondaryShotsperRound", setSecondaryShotsperRound)
 
 function SWEP:SecondaryAttack()
 	self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
@@ -151,31 +192,33 @@ end
 function SWEP:Shoot( model_file, sound, speed, shots)
 
 	self:EmitSound( sound )
-	
-	if ( CLIENT ) then return end
-	local ent = ents.Create( "prop_physics" )
-	if ( !IsValid( ent ) ) then return end
 
-	ent:SetModel( model_file )
+	for i=1, shots do
+		if ( CLIENT ) then return end
+		local ent = ents.Create( "prop_physics" )
+		if ( !IsValid( ent ) ) then return end
 
-	ent:SetPos( self.Owner:EyePos() + ( self.Owner:GetAimVector() * 16 ) )
-	
-	ent:SetAngles( self.Owner:EyeAngles())
-	for i=0, i<shots, 1 do
-	ent:Spawn()
-	local phys = ent:GetPhysicsObject()
-	if ( !IsValid( phys ) ) then ent:Remove() return end
+		ent:SetModel( model_file )
 
-	local velocity = self.Owner:GetAimVector()
-	velocity = velocity * 50
-	
-	phys:ApplyForceCenter( velocity * speed )
-	
-	cleanup.Add( self.Owner, "props", ent )
-	undo.Create( "Thrown_Chair" )
-	undo.AddEntity( ent )
-	undo.SetPlayer( self.Owner )
-	undo.Finish()
+		ent:SetPos( self.Owner:EyePos() + ( self.Owner:GetAimVector() * 16 ) )
+
+		ent:SetAngles( self.Owner:EyeAngles())
+
+		print(i)
+		ent:Spawn()
+		local phys = ent:GetPhysicsObject()
+		if ( !IsValid( phys ) ) then ent:Remove() return end
+
+		local velocity = self.Owner:GetAimVector()
+		velocity = velocity * 50
+
+		phys:ApplyForceCenter( velocity * speed )
+
+		cleanup.Add( self.Owner, "props", ent )
+		undo.Create( "Thrown_Chair" )
+		undo.AddEntity( ent )
+		undo.SetPlayer( self.Owner )
+		undo.Finish()
 	end
 end
 local lastReload = os.time()
@@ -184,12 +227,3 @@ function SWEP:Reload()
 	lastReload = os.time()
 	self:Shoot( "models/props_junk/watermelon01.mdl", 1)
 end
-
-
-
-
-
-
-
-
-
