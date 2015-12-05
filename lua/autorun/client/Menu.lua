@@ -1,40 +1,58 @@
 function optionSelected(option, selection)
 	if     option == "worldModel" then
-	
+		print("setWorldModel", selection)
+		RunConsoleCommand("custom-setWorldModel", selection)
 	elseif option == "viewModel" then
-	
+		print("setViewModel", selection)
+		RunConsoleCommand("custom-setViewModel", selection)
 	elseif option == "scope" then
-	
+		print("", selection)
+		RunConsoleCommand("custom-", selection)--$$
 	elseif option == "clip" then
-	
+		print("setPrimaryDefaultClip", selection)
+		RunConsoleCommand("custom-setPrimaryDefaultClip", selection)
 	elseif option == "pAuto" then
-	
+		print("setPrimaryAutomatic", selection)
+		RunConsoleCommand("custom-setPrimaryAutomatic", selection)
 	elseif option == "pFire" then
-	
+		print("setPrimaryFireRate", selection)
+		RunConsoleCommand("custom-setPrimaryFireRate", selection)--$$
 	elseif option == "pSpeed" then
-	
+		print("setPrimaryProjectileSpeed", selection)
+		RunConsoleCommand("custom-setPrimaryProjectileSpeed", selection)
 	elseif option == "pSound" then
-	
+		print("setPrimarySound", selection)
+		RunConsoleCommand("custom-setPrimarySound", selection)
 	elseif option == "pDamage" then
-	
+		print("", selection)
+		RunConsoleCommand("custom-", selection)--$$
 	elseif option == "pSpread" then
-	
+		print("", selection)
+	RunConsoleCommand("custom-", selection)--$$
 	elseif option == "pRounds" then
-	
+		print("setPrimaryShotsperRound", selection)
+		RunConsoleCommand("custom-setPrimaryShotsperRound", selection)
 	elseif option == "sAuto" then
-	
+		print("setSecondaryAutomatic", selection)
+		RunConsoleCommand("custom-setSecondaryAutomatic", selection)
 	elseif option == "sFire" then
-	
+		print("setSecondaryFireRate", selection)
+		RunConsoleCommand("custom-setSecondaryFireRate", selection)
 	elseif option == "sSpeed" then
-	
+		print("setSecondaryProjectileSpeed", selection)
+		RunConsoleCommand("custom-setSecondaryProjectileSpeed", selection)
 	elseif option == "sSound" then
-	
+		print("setSecondarySound", selection)
+		RunConsoleCommand("custom-setSecondarySound", selection)
 	elseif option == "sDamage" then
-	
+		print("", selection)
+		RunConsoleCommand("custom-", selection)--$$
 	elseif option == "sSpread" then
-	
+		print("", selection)
+		RunConsoleCommand("custom-", selection)--$$
 	elseif option == "sRounds" then
-	
+		print("setSecondaryShotsperRound", selection)
+		RunConsoleCommand("custom-setSecondaryShotsperRound", selection)
 	end
 end
 
@@ -92,7 +110,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("viewModel", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -104,7 +122,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("scope", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -116,31 +134,31 @@ function openMenu()
 	weaponModel:AddChoice("Yes", {"YES"})
 	weaponModel:AddChoice("No", {"NO"})
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pAuto", data[1])
 	end
 	-------------------------------------------------------------
 	
 	--Primary Fire Rate------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
-	local options = {1, 2, 3}
+	local options = {.1, .2, .5, 1}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pFire", data[1])
 	end
 	-------------------------------------------------------------
 	
 	--Primary Speed----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Speed")
 	weaponModel:Setup("Combo", {text = "Select Projectile Speed..."})
-	local options = {1, 2, 3}
+	local options = {1, 20, 50, 100, 250, 500, 2000}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pSpeed", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -152,7 +170,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pSound", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -164,7 +182,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pDamage", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -176,7 +194,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pSpread", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -188,7 +206,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("pRounds", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -200,7 +218,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("clip", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -212,31 +230,31 @@ function openMenu()
 	weaponModel:AddChoice("Yes", {"YES"})
 	weaponModel:AddChoice("No", {"NO"})
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sAuto", data[1])
 	end
 	-------------------------------------------------------------
 	
 	--Secondary Fire Rate----------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
-	local options = {1, 2, 3}
+	local options = {.1, .2, .5, 1}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sFire", data[1])
 	end
 	-------------------------------------------------------------
 	
 	--Secondary Speed--------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectile Speed")
 	weaponModel:Setup("Combo", {text = "Select Projectile Speed..."})
-	local options = {1, 2, 3}
+	local options = {1, 20, 50, 100, 250, 500, 2000}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sSpeed", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -248,7 +266,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sSound", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -260,7 +278,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sDamage", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -272,7 +290,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sSpread", data[1])
 	end
 	-------------------------------------------------------------
 	
@@ -284,7 +302,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		optionSelected("worldModel", data[1])
+		optionSelected("sRounds", data[1])
 	end
 	-------------------------------------------------------------
 	
