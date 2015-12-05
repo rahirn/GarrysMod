@@ -3,6 +3,10 @@ AddCSLuaFile( "shared.lua" )  -- and shared scripts are sent.
 
 include('shared.lua')
 
+function ENT:SetupDataTables()
+	self:NetworkVar("Int", 0, "LastUsed")
+end
+
 function ENT:SpawnFunction(ply, tr) -- Spawn function needed to make it appear on the spawn menu
 	if (!tr.HitWorld) then return end
 
@@ -16,10 +20,11 @@ end
 
 function ENT:Initialize()
 
-	self:SetModel( "models/props_spytech/computer_printer.mdl" )
+	self:SetModel( "models/props_junk/TrashBin01a.mdl" )
 	self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
 	self:SetMoveType( MOVETYPE_VPHYSICS )   -- after all, gmod is a physics
 	self:SetSolid( SOLID_VPHYSICS )         -- Toolbox
+	self:SetLastUsed(os.time())
 
     --self:SetNetworkedBool("bouncing", false, false) -- Make sure the message doesn't show on the client.
 
@@ -34,12 +39,10 @@ function ENT:Use( activator, caller )
 
     local phys = self:GetPhysicsObject()
 
-    if(phys:IsValid()) then
-        --phys:ApplyForceOffset( Vector( 0, 0, 500 ), Vector( 0, 0, 0) ) -- Apply a physics impulse to the physics object.
-
-	    --self:NextThink( CurTime() ) -- Make sure that Think() is called.
-
-        --self:SetNetworkedBool("bouncing", true, true) -- Tell the clients we are in the air.
+    if(phys:IsValid() && (os.time() - self:GetLastUsed()) > 0) then
+        --caller.openMenu()
+		self:SetLastUsed(os.time())
+		RunConsoleCommand("weaponMenu")
     end
 
     return
