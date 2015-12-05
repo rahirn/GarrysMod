@@ -13,24 +13,14 @@ function openMenu()
 	
 	local weaponModel = panel:CreateRow("Weapon", "Model")
 	weaponModel:Setup("Combo", {text = "Select Weapon Model..."})
-	weaponModel:AddChoice("one", {})
-	weaponModel:AddChoice("two", {})
-	weaponModel:AddChoice("three", {})
+	local allWeapons = weapons.GetList()
+	for key,value in pairs(allWeapons) do
+		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"], value["WorldModel"]})
+	end
 	weaponModel.DataChanged = function(self, data)
-		print("You Selected: ", data)
+		print("You Selected: \n" .. data[1] .. "\n" .. data[2])
 	end
 	
-	
-	local weaponModel = panel:CreateRow("Ammo", "Model")
-	weaponModel:Setup("Combo", {text = "Select Ammo Model..."})
-	weaponModel:AddChoice("first", {})
-	weaponModel:AddChoice("second", {})
-	weaponModel:AddChoice("third", {})
-	weaponModel.DataChanged = function(self, data)
-		print("You Selected: ", data)
-	end
-	
-	
-	end
+	end 
 	
 concommand.Add("weaponMenu", openMenu) 
