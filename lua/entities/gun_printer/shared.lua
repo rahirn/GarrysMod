@@ -1,5 +1,6 @@
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
+ENT.Spawnable = true
 
 ENT.PrintName		= "Gun Printer"
 ENT.Author			= "BF, RH, JJ, TT"
