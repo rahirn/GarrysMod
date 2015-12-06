@@ -132,6 +132,12 @@ end
 
 concommand.Add("custom-setPrimaryShotsperRound", setPrimaryShotsperRound)
 
+function setPrimarySpread(ply, cmd, args)
+	primarySpread = args[1]
+end
+
+concommand.Add("custom-setPrimarySpread", setPrimarySpread)
+
 function setSecondary(ammo, clipsize, defaultclip, automatic, proj, sound, firerate, speed, shots)
 	setSecondaryAmmo(ammo or "none")
 	setSecondaryClip(clipsize or -1)
@@ -192,6 +198,12 @@ end
 
 concommand.Add("custom-setSecondaryShotsperRound", setSecondaryShotsperRound)
 
+function setSecondarySpread(ply, cmd, args)
+	secondarySpread = args[1]
+end
+
+concommand.Add("custom-setSecondarySpread", setSecondarySpread)
+
 function SWEP:SecondaryAttack()
 	if scope == -1 then
 		print("speed in sAttach: " .. secondaryProjectileSpeed)
@@ -221,7 +233,13 @@ function SWEP:PrimaryAttack()
 	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound)
 end
 
-function SWEP:Shoot( model_file, sound, speed, shots)
+function hit(ent, data)
+	if data.HitEntity:IsPlayer() then
+		data.HitEntity:TakeDamage(10, ent, data.HitEntity)
+	end
+end
+
+function SWEP:Shoot( model_file, sound, speed, shots, spread)
 	print("speed in Shoot: " .. speed)
 
 	self:EmitSound( sound )
@@ -240,10 +258,11 @@ function SWEP:Shoot( model_file, sound, speed, shots)
 		ent:Spawn()
 		local phys = ent:GetPhysicsObject()
 		if ( !IsValid( phys ) ) then ent:Remove() return end
-
+		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
+		velocity.Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
+		
 		velocity = velocity * 50
-
 		phys:ApplyForceCenter( velocity * speed )
 
 		cleanup.Add( self.Owner, "props", ent )
