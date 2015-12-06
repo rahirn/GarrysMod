@@ -167,7 +167,7 @@ end
 concommand.Add("custom-setSecondaryFireRate", setSecondaryFireRate)
 
 function setSecondaryProjectileSpeed(ply, cmd, args)
-	SecondaryProjectileSpeed = args[1]
+	secondaryProjectileSpeed = args[1]
 end
 
 concommand.Add("custom-setSecondaryProjectileSpeed", setSecondaryProjectileSpeed)
@@ -179,17 +179,20 @@ end
 concommand.Add("custom-setSecondaryShotsperRound", setSecondaryShotsperRound)
 
 function SWEP:SecondaryAttack()
+	print("speed in sAttach: " .. secondaryProjectileSpeed)
 	self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
 	self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound)
 end
 
 
 function SWEP:PrimaryAttack()
+	print("speed in pAttack: " .. primaryProjectileSpeed)
 	self.Weapon:SetNextPrimaryFire( CurTime() + primaryfireRate )
 	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound)
 end
 
 function SWEP:Shoot( model_file, sound, speed, shots)
+	print("speed in Shoot: " .. speed)
 
 	self:EmitSound( sound )
 
@@ -204,7 +207,6 @@ function SWEP:Shoot( model_file, sound, speed, shots)
 
 		ent:SetAngles( self.Owner:EyeAngles())
 
-		print(i)
 		ent:Spawn()
 		local phys = ent:GetPhysicsObject()
 		if ( !IsValid( phys ) ) then ent:Remove() return end
