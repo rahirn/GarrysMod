@@ -21,11 +21,14 @@ function optionSelected(option, selection)
 		print("setPrimaryProjectileSpeed", selection)
 		RunConsoleCommand("custom-setPrimaryProjectileSpeed", selection)
 	elseif option == "pSound" then
-		print("setPrimarySound", selection)
+		--print("setPrimarySound", selection)
 		if selection == "filebrowserSound" then
-			selection = openSoundBrowser()
+			print("function return:")
+			print(openSoundBrowser())
 		end	
-		RunConsoleCommand("custom-setPrimarySound", selection)
+		print("this is the path: ")
+		print(selection)
+		--RunConsoleCommand("custom-setPrimarySound", selection)
 	elseif option == "pDamage" then
 		print("setPrimaryDamage", selection)
 		RunConsoleCommand("custom-setPrimaryDamage", selection)
@@ -173,6 +176,7 @@ function openMenu()
 	end
 	-------------------------------------------------------------
 	function openSoundBrowser()
+		RunConsoleCommand("StopSound")
 		local frame = vgui.Create( "DFrame" )
 		frame:SetSize( 500, 250 )
 		frame:SetSizable( true )
@@ -184,12 +188,16 @@ function openMenu()
 		browser:Dock( FILL )
 
 		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
-		browser:SetBaseFolder( "data" ) -- The root folder
+		browser:SetBaseFolder( "sound" ) -- The root folder
 		browser:SetOpen( true ) -- Open the tree to show sub-folders
 		browser:SetCurrentFolder( "persist" ) -- Show files from persist
 
 		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
-				return path
+			print("path in openSoundBrowser")
+			print(path)
+			RunConsoleCommand("custom-setPrimarySound", string.sub(path, 6))
+			surface.PlaySound(string.sub(path, 6))
+			return path 			
 		end
 	end
 
