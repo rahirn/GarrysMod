@@ -22,6 +22,9 @@ function optionSelected(option, selection)
 		RunConsoleCommand("custom-setPrimaryProjectileSpeed", selection)
 	elseif option == "pSound" then
 		print("setPrimarySound", selection)
+		if selection == "filebrowserSound" then
+			selection = openSoundBrowser()
+		end	
 		RunConsoleCommand("custom-setPrimarySound", selection)
 	elseif option == "pDamage" then
 		print("", selection)
@@ -161,11 +164,33 @@ function openMenu()
 		optionSelected("pSpeed", data[1])
 	end
 	-------------------------------------------------------------
-	
+	function openSoundBrowser()
+		local frame = vgui.Create( "DFrame" )
+		frame:SetSize( 500, 250 )
+		frame:SetSizable( true )
+		frame:Center()
+		frame:MakePopup()
+		frame:SetTitle( "Select a sound file" )
+
+		local browser = vgui.Create( "DFileBrowser", frame )
+		browser:Dock( FILL )
+
+		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
+		browser:SetBaseFolder( "data" ) -- The root folder
+		browser:SetOpen( true ) -- Open the tree to show sub-folders
+		browser:SetCurrentFolder( "persist" ) -- Show files from persist
+
+		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
+				return path
+		end
+	end
+
 	--Primary Sound----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Sound")
+
 	weaponModel:Setup("Combo", {text = "Select Sound..."})
 	local options = weapons.GetList() --TODO: ad table of all sounds
+	weaponModel:AddChoice("Select your own", {"filebrowserSound"} )
 	for key,value in pairs(options) do
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
@@ -173,7 +198,7 @@ function openMenu()
 		optionSelected("pSound", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Primary Damage---------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Damage")
 	weaponModel:Setup("Combo", {text = "Select Projectile Damage..."})
