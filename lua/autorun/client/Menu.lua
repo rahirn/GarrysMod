@@ -117,9 +117,9 @@ function openMenu()
 	--Scopes-----------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "Scope")
 	weaponModel:Setup("Combo", {text = "Select Scope..."})
-	local options = weapons.GetList() --TODO: ad table of all scopes
-	for key,value in pairs(options) do
-		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
+	local options = {-1, 5, 10, 25, 50, 100}
+	for i, v in pairs(options) do
+		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
 		optionSelected("scope", data[1])
