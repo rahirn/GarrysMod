@@ -38,6 +38,8 @@ local scope = -1
 local Zoomed = false
 local primarySpread = 0
 local secondarySpread = 0
+local primaryDamage = 10
+local secondaryDamage = 10
 
 
 function setViewModel(ply, cmd, args)
@@ -66,6 +68,7 @@ function setWorldModel(ply, cmd, args)
 	SWEP.WorldModel = args[1]
 end
 
+concommand.Add("custom-setWorldModel", setWorldModel)
 concommand.Add("custom-setWorldModel", setWorldModel)
 
 function setPrimaryProjectile(ply, cmd, args)
@@ -103,6 +106,16 @@ function setPrimaryDefaultClip(ply, cmd, args)
 end
 
 concommand.Add("custom-setPrimaryDefaultClip", setPrimaryDefaultClip)
+
+function setPrimaryDamage(ply, cmd, args)
+	primaryDamage = args[1]
+end
+concommand.Add("custom-setPrimaryDamage", setPrimaryDamage)
+
+function setSecondaryDamage(ply, cmd, args)
+	secondaryDamage = args[1]
+end
+concommand.Add("custom-setSecondaryDamage", setSecondaryDamage)
 
 function setPrimaryAutomatic(ply, cmd, args)
 	SWEP.Primary.Automatic = args[1]
@@ -210,7 +223,7 @@ function SWEP:SecondaryAttack()
 	if scope == -1 then
 		print("speed in sAttach: " .. secondaryProjectileSpeed)
 		self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
-		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound, secondarySpread)
+		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound, secondarySpread, secondaryDamage)
 	else
 		if (!Zoomed) then -- The player is not zoomed in
 	 
@@ -232,7 +245,7 @@ end
 function SWEP:PrimaryAttack()
 	print("speed in pAttack: " .. primaryProjectileSpeed)
 	self.Weapon:SetNextPrimaryFire( CurTime() + primaryfireRate )
-	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound, primarySpread)
+	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound, primarySpread, secondaryDamage)
 end
 
 function hit(ent, data)

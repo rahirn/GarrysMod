@@ -27,8 +27,8 @@ function optionSelected(option, selection)
 		end	
 		RunConsoleCommand("custom-setPrimarySound", selection)
 	elseif option == "pDamage" then
-		print("", selection)
-		RunConsoleCommand("custom-", selection)--$$
+		print("setPrimaryDamage", selection)
+		RunConsoleCommand("custom-setPrimaryDamage", selection)
 	elseif option == "pSpread" then
 		print("", selection)
 	RunConsoleCommand("custom-", selection)--$$
@@ -48,8 +48,8 @@ function optionSelected(option, selection)
 		print("setSecondarySound", selection)
 		RunConsoleCommand("custom-setSecondarySound", selection)
 	elseif option == "sDamage" then
-		print("", selection)
-		RunConsoleCommand("custom-", selection)--$$
+		print("setSecondaryDamage", selection)
+		RunConsoleCommand("custom-setSecondaryDamage", selection)
 	elseif option == "sSpread" then
 		print("", selection)
 		RunConsoleCommand("custom-", selection)--$$
