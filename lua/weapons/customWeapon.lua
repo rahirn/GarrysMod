@@ -286,6 +286,10 @@ function hit(ent, data)
 	end
 end
 
+function delete(ent)
+	ent:Remove()
+end
+
 function SWEP:Shoot( model_file, sound, speed, shots, spread)
 	print("speed in Shoot: " .. speed)
 	self:EmitSound( sound )
@@ -306,12 +310,23 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
+<<<<<<< HEAD
 		print(velocity)
 		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
 		print(velocity)
 
+=======
+		local temp = Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread))
+		local temp2 = Vector(math.random(spread*2)-spread, math.random(spread*2)-spread, math.random(spread*2)-spread)
+		print(temp)
+		print(temp2)
+		--velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
+		
+>>>>>>> 9e01bb6ac99fd34b4700f142dc7a3b5c015ad5fe
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )
+		
+		timer.Create(nil, 10, 1, delete(ent))
 
 		cleanup.Add( self.Owner, "props", ent )
 		undo.Create( "Thrown_Chair" )
