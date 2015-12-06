@@ -254,6 +254,10 @@ function hit(ent, data)
 	end
 end
 
+function delete(ent)
+	ent:Remove()
+end
+
 function SWEP:Shoot( model_file, sound, speed, shots, spread)
 	print("speed in Shoot: " .. speed)
 
@@ -283,6 +287,8 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )
+		
+		timer.Create(nil, 10, 1, delete(ent))
 
 		cleanup.Add( self.Owner, "props", ent )
 		undo.Create( "Thrown_Chair" )
