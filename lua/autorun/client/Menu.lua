@@ -142,8 +142,8 @@ function openMenu()
 	--Primary Auto-----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
-	weaponModel:AddChoice("Yes", {"YES"})
-	weaponModel:AddChoice("No", {"NO"})
+	weaponModel:AddChoice("Yes", {true})
+	weaponModel:AddChoice("No", {false})
 	weaponModel.DataChanged = function(self, data)
 		optionSelected("pAuto", data[1])
 	end
@@ -260,8 +260,8 @@ function openMenu()
 	--Secondary Auto-----------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
-	weaponModel:AddChoice("Yes", {"YES"})
-	weaponModel:AddChoice("No", {"NO"})
+	weaponModel:AddChoice("Yes", {true})
+	weaponModel:AddChoice("No", {false})
 	weaponModel.DataChanged = function(self, data)
 		optionSelected("sAuto", data[1])
 	end
