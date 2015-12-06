@@ -36,6 +36,8 @@ local primaryshotsPerRound = 1
 local secondaryshotsPerRound = 1
 local scope = -1
 local Zoomed = false
+local primarySpread = 0
+local secondarySpread = 0
 
 
 function setViewModel(ply, cmd, args)
@@ -208,7 +210,7 @@ function SWEP:SecondaryAttack()
 	if scope == -1 then
 		print("speed in sAttach: " .. secondaryProjectileSpeed)
 		self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
-		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound)
+		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound, secondarySpread)
 	else
 		if (!Zoomed) then -- The player is not zoomed in
 	 
@@ -230,7 +232,7 @@ end
 function SWEP:PrimaryAttack()
 	print("speed in pAttack: " .. primaryProjectileSpeed)
 	self.Weapon:SetNextPrimaryFire( CurTime() + primaryfireRate )
-	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound)
+	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound, primarySpread)
 end
 
 function hit(ent, data)
@@ -260,7 +262,9 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
-		velocity.Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
+		print(velocity)
+		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
+		print(velocity)
 		
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )

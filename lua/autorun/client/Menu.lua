@@ -222,7 +222,7 @@ function openMenu()
 	--Primary Spread---------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Spread")
 	weaponModel:Setup("Combo", {text = "Select Projectile Spread..."})
-	local options = {1, 2, 3}
+	local options = {0, 1, 2, 3, 50}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
