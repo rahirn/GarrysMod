@@ -20,7 +20,7 @@ end
 
 function ENT:Initialize()
 
-	self:SetModel( "models/props_junk/TrashBin01a.mdl" )
+	self:SetModel( "models/props/cs_office/computer.mdl" )
 	self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
 	self:SetMoveType( MOVETYPE_VPHYSICS )   -- after all, gmod is a physics
 	self:SetSolid( SOLID_VPHYSICS )         -- Toolbox
@@ -28,10 +28,18 @@ function ENT:Initialize()
 
     --self:SetNetworkedBool("bouncing", false, false) -- Make sure the message doesn't show on the client.
 
+	--self:AddCallback( "OnAngleChange", AngleChange )
 	local phys = self:GetPhysicsObject()
 	if (phys:IsValid()) then
 		phys:Wake()
 	end
+end
+
+function AngleChange(entity, a)
+	print(entity:GetVelocity())
+	v = entity:GetVelocity()
+	entity:SetAngles(Angle(0, a.yaw, 0))
+	entity:SetVelocity(v)
 end
 
 function ENT:Use( activator, caller )
