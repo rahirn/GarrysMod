@@ -6,8 +6,8 @@ function optionSelected(option, selection)
 		print("setViewModel", selection)
 		RunConsoleCommand("custom-setViewModel", selection)
 	elseif option == "scope" then
-		print("", selection)
-		RunConsoleCommand("custom-", selection)--$$
+		print("setScope", selection)
+		RunConsoleCommand("custom-setScope", selection)--$$
 	elseif option == "clip" then
 		print("setPrimaryDefaultClip", selection)
 		RunConsoleCommand("custom-setPrimaryDefaultClip", selection)
@@ -120,11 +120,19 @@ function openMenu()
 	--Scopes-----------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "Scope")
 	weaponModel:Setup("Combo", {text = "Select Scope..."})
-	local options = {-1, 5, 10, 25, 50, 100}
+	local options = {-1, 5, 10, 25, 50, 75}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
+		if math.floor(data[1]) == -1 then
+			print("resize")
+			botRightPanel:SetSize(0, 0)
+			botLeftPanel:SetSize(ScrW() * WIDTH, ((ScrH() * HEIGHT) * .75) - 30)
+		else
+			botLeftPanel:SetSize((ScrW() * WIDTH * .5) - 2, ((ScrH() * HEIGHT) * .75) - 30)
+			botRightPanel:SetSize((ScrW() * WIDTH * .5) - 3, ((ScrH() * HEIGHT) * .75) - 30)
+		end
 		optionSelected("scope", data[1])
 	end
 	-------------------------------------------------------------

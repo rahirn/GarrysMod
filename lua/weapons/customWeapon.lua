@@ -34,6 +34,8 @@ local primaryProjectileSpeed = 5000
 local secondaryProjectileSpeed = 5000
 local primaryshotsPerRound = 1
 local secondaryshotsPerRound = 1
+local scope = -1
+local Zoomed = false
 
 
 function setViewModel(ply, cmd, args)
@@ -45,6 +47,18 @@ function setViewModel(ply, cmd, args)
 end
 
 concommand.Add("custom-setViewModel", setViewModel)
+
+
+function setScope(ply, cmd, args)
+	if math.floor(args[1]) == -1 + 0.00 then
+		scope = -1
+	else
+		scope = 76 - args[1]
+	end
+end
+
+concommand.Add("custom-setScope", setScope)
+
 
 function setWorldModel(ply, cmd, args)
 	SWEP.WorldModel = args[1]
@@ -179,9 +193,25 @@ end
 concommand.Add("custom-setSecondaryShotsperRound", setSecondaryShotsperRound)
 
 function SWEP:SecondaryAttack()
-	print("speed in sAttach: " .. secondaryProjectileSpeed)
-	self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
-	self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound)
+	if scope == -1 then
+		print("speed in sAttach: " .. secondaryProjectileSpeed)
+		self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
+		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound)
+	else
+		if (!Zoomed) then -- The player is not zoomed in
+	 
+			Zoomed = true -- Now he is
+			if SERVER then
+				self.Owner:SetFOV( scope, 0.3 ) -- SetFOV is serverside only
+			end
+		else -- If he is
+	 
+			Zoomed = false -- We tell the SWEP that he is not
+			if SERVER then
+				self.Owner:SetFOV( 0, 0.3 ) -- Setting to 0 resets the FOV
+			end
+		end
+	end
 end
 
 
