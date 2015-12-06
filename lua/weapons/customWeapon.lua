@@ -275,9 +275,11 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
-		print(velocity)
-		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
-		print(velocity)
+		local temp = Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread))
+		local temp2 = Vector(math.random(spread*2)-spread, math.random(spread*2)-spread, math.random(spread*2)-spread)
+		print(temp)
+		print(temp2)
+		--velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
 		
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )
