@@ -19,11 +19,18 @@ SWEP.Slot = 1
 SWEP.SlotPos = 2
 SWEP.DrawAmmo = false
 SWEP.DrawCrosshair = true
-SWEP.ViewModel			= "models/weapons/v_rpg.mdl"
-SWEP.WorldModel			= "models/weapons/w_rocket_launcher.mdl"
 
-local viewModel = "models/weapons/v_rpg.mdl"
-local worldModel = "models/weapons/w_rocket_launcher.mdl"
+SWEP.ViewModel				= Model( "models/weapons/c_arms.mdl" )
+SWEP.WorldModel				= ""
+SWEP.ViewModelFOV			= 54
+SWEP.UseHands				= true
+
+
+
+
+
+
+
 local primaryShot = "models/props_c17/doll01.mdl"
 local secondaryShot = "models/props_c17/doll01.mdl"
 local primarySound = Sound( "ambient/explosions/exp1.wav" )
@@ -42,6 +49,12 @@ local primaryDamage = 10
 local secondaryDamage = 10
 
 
+function SWEP:Initialize()
+
+	self:SetHoldType( "fist" )
+
+end
+
 function setViewModel(ply, cmd, args)
 	viewModel = args[1]
 	ply:StripWeapon("customWeapon")
@@ -51,7 +64,6 @@ function setViewModel(ply, cmd, args)
 end
 
 concommand.Add("custom-setViewModel", setViewModel)
-
 
 function setScope(ply, cmd, args)
 	if math.floor(args[1]) == -1 + 0.00 then
@@ -221,18 +233,22 @@ concommand.Add("custom-setSecondarySpread", setSecondarySpread)
 
 function SWEP:SecondaryAttack()
 	if scope == -1 then
-		print("speed in sAttach: " .. secondaryProjectileSpeed)
+		local anim = "fists_right"
+
+		local vm = self.Owner:GetViewModel()
+		vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
+
 		self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
 		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound, secondarySpread, secondaryDamage)
 	else
 		if (!Zoomed) then -- The player is not zoomed in
-	 
+
 			Zoomed = true -- Now he is
 			if SERVER then
 				self.Owner:SetFOV( scope, 0.3 ) -- SetFOV is serverside only
 			end
 		else -- If he is
-	 
+
 			Zoomed = false -- We tell the SWEP that he is not
 			if SERVER then
 				self.Owner:SetFOV( 0, 0.3 ) -- Setting to 0 resets the FOV
@@ -243,7 +259,12 @@ end
 
 
 function SWEP:PrimaryAttack()
-	print("speed in pAttack: " .. primaryProjectileSpeed)
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+
+	local anim = "fists_left"
+	local vm = self.Owner:GetViewModel()
+	vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
+
 	self.Weapon:SetNextPrimaryFire( CurTime() + primaryfireRate )
 	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound, primarySpread, secondaryDamage)
 end
@@ -254,9 +275,11 @@ function hit(ent, data)
 	end
 end
 
-function SWEP:Shoot( model_file, sound, speed, shots, spread)
-	print("speed in Shoot: " .. speed)
+function delete(ent)
+	ent:Remove()
+end
 
+function SWEP:Shoot( model_file, sound, speed, shots, spread)
 	self:EmitSound( sound )
 
 	for i=1, shots do
@@ -275,15 +298,16 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
-		print(velocity)
+
 		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
-		print(velocity)
-		
+
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )
 
+		timer.Create("delete" .. math.random(1, 100000), 10, 1, function() delete(ent) end)
+
 		cleanup.Add( self.Owner, "props", ent )
-		undo.Create( "Thrown_Chair" )
+		undo.Create( "Projectile" )
 		undo.AddEntity( ent )
 		undo.SetPlayer( self.Owner )
 		undo.Finish()
@@ -294,4 +318,11 @@ function SWEP:Reload()
 	if os.time() < lastReload + 1 then return end
 	lastReload = os.time()
 	self:Shoot( "models/props_junk/watermelon01.mdl", 1)
+end
+
+
+function SWEP:Deploy()
+	local vm = self.Owner:GetViewModel()
+	vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
+	return true
 end
