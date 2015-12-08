@@ -55,15 +55,6 @@ function SWEP:Initialize()
 
 end
 
-function SWEP:UpdateNextIdle()
-
-	local vm = self.Owner:GetViewModel()
-	self:SetNextIdle( CurTime() + vm:SequenceDuration() )
-
-end
-
-
-
 function setViewModel(ply, cmd, args)
 	viewModel = args[1]
 	ply:StripWeapon("customWeapon")
@@ -247,7 +238,6 @@ function SWEP:SecondaryAttack()
 		local vm = self.Owner:GetViewModel()
 		vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
 
-		print("speed in sAttach: " .. secondaryProjectileSpeed)
 		self.Weapon:SetNextPrimaryFire( CurTime() + secondaryfireRate )
 		self:Shoot( secondaryShot,  secondarySound, secondaryProjectileSpeed, secondaryshotsPerRound, secondarySpread, secondaryDamage)
 	else
@@ -275,7 +265,6 @@ function SWEP:PrimaryAttack()
 	local vm = self.Owner:GetViewModel()
 	vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
 
-	print("speed in pAttack: " .. primaryProjectileSpeed)
 	self.Weapon:SetNextPrimaryFire( CurTime() + primaryfireRate )
 	self:Shoot( primaryShot, primarySound, primaryProjectileSpeed, primaryshotsPerRound, primarySpread, secondaryDamage)
 end
@@ -291,7 +280,6 @@ function delete(ent)
 end
 
 function SWEP:Shoot( model_file, sound, speed, shots, spread)
-	print("speed in Shoot: " .. speed)
 	self:EmitSound( sound )
 
 	for i=1, shots do
@@ -310,26 +298,16 @@ function SWEP:Shoot( model_file, sound, speed, shots, spread)
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
 		local velocity = self.Owner:GetAimVector()
-<<<<<<< HEAD
-		print(velocity)
-		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
-		print(velocity)
 
-=======
-		local temp = Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread))
-		local temp2 = Vector(math.random(spread*2)-spread, math.random(spread*2)-spread, math.random(spread*2)-spread)
-		print(temp)
-		print(temp2)
-		--velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
-		
->>>>>>> 9e01bb6ac99fd34b4700f142dc7a3b5c015ad5fe
+		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
+
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * speed )
-		
-		timer.Create(nil, 10, 1, delete(ent))
+
+		timer.Create("delete" .. math.random(1, 100000), 10, 1, function() delete(ent) end)
 
 		cleanup.Add( self.Owner, "props", ent )
-		undo.Create( "Thrown_Chair" )
+		undo.Create( "Projectile" )
 		undo.AddEntity( ent )
 		undo.SetPlayer( self.Owner )
 		undo.Finish()
@@ -346,6 +324,5 @@ end
 function SWEP:Deploy()
 	local vm = self.Owner:GetViewModel()
 	vm:SendViewModelMatchingSequence( vm:LookupSequence( "fists_draw" ) )
-	self:UpdateNextIdle()
 	return true
 end
