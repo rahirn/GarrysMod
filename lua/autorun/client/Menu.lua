@@ -24,7 +24,7 @@ function optionSelected(option, selection)
 		print("setPrimarySound", selection)
 		if selection == "filebrowserSound" then
 			selection = openSoundBrowser()
-		end	
+		end
 		RunConsoleCommand("custom-setPrimarySound", selection)
 	elseif option == "pDamage" then
 		print("setPrimaryDamage", selection)
@@ -60,9 +60,9 @@ function optionSelected(option, selection)
 end
 
 function openMenu()
-	local WIDTH = .6
-	local HEIGHT = .8
-	
+	local WIDTH = .5
+	local HEIGHT = .5
+
 	local menuFrame = vgui.Create("DFrame")
 	menuFrame:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT)
 	menuFrame:Center()
@@ -71,26 +71,28 @@ function openMenu()
 	menuFrame:SetSizable(false)
 	menuFrame:ShowCloseButton(true)
 	menuFrame:MakePopup()
-	
+
 	local topPanel = vgui.Create("DPanel", menuFrame)
 	topPanel:SetPos(0, 25)
 	topPanel:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT * .25)
-	
+
 	local botLeftPanel = vgui.Create("DPanel", menuFrame)
 	botLeftPanel:SetPos(0, 30 + (ScrH() * HEIGHT * .25))
 	botLeftPanel:SetSize((ScrW() * WIDTH * .5) - 2, ((ScrH() * HEIGHT) * .75) - 30)
-	
+
 	local botRightPanel = vgui.Create("DPanel", menuFrame)
 	botRightPanel:SetPos((ScrW() * WIDTH * .5) + 3, 30 + (ScrH() * HEIGHT * .25))
 	botRightPanel:SetSize((ScrW() * WIDTH * .5) - 3, ((ScrH() * HEIGHT) * .75) - 30)
-	
+
 	local topProperties = vgui.Create("DProperties", topPanel)
 	topProperties:Dock(FILL)
 	local botLeftProperties = vgui.Create("DProperties", botLeftPanel)
 	botLeftProperties:Dock(FILL)
 	local botRightProperties = vgui.Create("DProperties", botRightPanel)
 	botRightProperties:Dock(FILL)
-	
+
+	-- Model cannot be set dynamically
+	--[[
 	--World Model------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "World Model")
 	weaponModel:Setup("Combo", {text = "Select Weapon Model..."})
@@ -104,7 +106,7 @@ function openMenu()
 		optionSelected("worldModel", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--View Model-------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "View Model")
 	weaponModel:Setup("Combo", {text = "Select Weapon Model..."})
@@ -116,7 +118,8 @@ function openMenu()
 		optionSelected("viewModel", data[1])
 	end
 	-------------------------------------------------------------
-	
+	]]
+
 	--Scopes-----------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "Scope")
 	weaponModel:Setup("Combo", {text = "Select Scope..."})
@@ -136,9 +139,10 @@ function openMenu()
 		optionSelected("scope", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--END OF TOP PANEL===========================================
-	
+
+	--[[
 	--Primary Auto-----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
@@ -148,7 +152,8 @@ function openMenu()
 		optionSelected("pAuto", data[1])
 	end
 	-------------------------------------------------------------
-	
+	]]
+
 	--Primary Fire Rate------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
@@ -160,7 +165,7 @@ function openMenu()
 		optionSelected("pFire", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Primary Speed----------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Speed")
 	weaponModel:Setup("Combo", {text = "Select Projectile Speed..."})
@@ -184,7 +189,7 @@ function openMenu()
 		browser:Dock( FILL )
 
 		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
-		browser:SetBaseFolder( "data" ) -- The root folder
+		browser:SetBaseFolder( "sound" ) -- The root folder
 		browser:SetOpen( true ) -- Open the tree to show sub-folders
 		browser:SetCurrentFolder( "persist" ) -- Show files from persist
 
@@ -218,7 +223,7 @@ function openMenu()
 		optionSelected("pDamage", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Primary Spread---------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Spread")
 	weaponModel:Setup("Combo", {text = "Select Projectile Spread..."})
@@ -230,7 +235,7 @@ function openMenu()
 		optionSelected("pSpread", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Projectiles per Round--------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectiles per Round")
 	weaponModel:Setup("Combo", {text = "Select Projectiles per Round..."})
@@ -242,7 +247,7 @@ function openMenu()
 		optionSelected("pRounds", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Clip Size--------------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Clip Size")
 	weaponModel:Setup("Combo", {text = "Select Clip Size..."})
@@ -254,9 +259,10 @@ function openMenu()
 		optionSelected("clip", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--END OF BOTTOM LEFT PANEL===================================
-	
+
+	--[[
 	--Secondary Auto-----------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Automatic")
 	weaponModel:Setup("Combo", {text = "Select Automatic..."})
@@ -266,7 +272,8 @@ function openMenu()
 		optionSelected("sAuto", data[1])
 	end
 	-------------------------------------------------------------
-	
+	]]
+
 	--Secondary Fire Rate----------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
@@ -278,7 +285,7 @@ function openMenu()
 		optionSelected("sFire", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Speed--------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectile Speed")
 	weaponModel:Setup("Combo", {text = "Select Projectile Speed..."})
@@ -290,7 +297,7 @@ function openMenu()
 		optionSelected("sSpeed", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Sound--------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Sound")
 	weaponModel:Setup("Combo", {text = "Select Sound..."})
@@ -302,7 +309,7 @@ function openMenu()
 		optionSelected("sSound", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Damage-------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectile Damage")
 	weaponModel:Setup("Combo", {text = "Select Projectile Damage..."})
@@ -314,7 +321,7 @@ function openMenu()
 		optionSelected("sDamage", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Spread-------------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectile Spread")
 	weaponModel:Setup("Combo", {text = "Select Projectile Spread..."})
@@ -326,7 +333,7 @@ function openMenu()
 		optionSelected("sSpread", data[1])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Projectiles per Round----------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectiles per Round")
 	weaponModel:Setup("Combo", {text = "Select Projectiles per Round..."})
@@ -338,27 +345,7 @@ function openMenu()
 		optionSelected("sRounds", data[1])
 	end
 	-------------------------------------------------------------
-	
-	
+
+
 	end
-concommand.Add("weaponMenu", openMenu) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+concommand.Add("weaponMenu", openMenu)
