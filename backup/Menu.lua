@@ -1,9 +1,69 @@
+function optionSelected(option, selection)
+	if     option == "worldModel" then
+		print("setWorldModel", selection)
+		RunConsoleCommand("custom-setWorldModel", selection)
+	elseif option == "viewModel" then
+		print("setViewModel", selection)
+		RunConsoleCommand("custom-setViewModel", selection)
+	elseif option == "scope" then
+		print("setScope", selection)
+		RunConsoleCommand("custom-setScope", selection)--$$
+	elseif option == "clip" then
+		print("setPrimaryDefaultClip", selection)
+		RunConsoleCommand("custom-setPrimaryDefaultClip", selection)
+	elseif option == "pAuto" then
+		print("setPrimaryAutomatic", selection)
+		RunConsoleCommand("custom-setPrimaryAutomatic", selection)
+	elseif option == "pFire" then
+		print("setPrimaryFireRate", selection)
+		RunConsoleCommand("custom-setPrimaryFireRate", selection)--$$
+	elseif option == "pSpeed" then
+		print("setPrimaryProjectileSpeed", selection)
+		RunConsoleCommand("custom-setPrimaryProjectileSpeed", selection)
+	elseif option == "pSound" then
+		--print("setPrimarySound", selection)
+		if selection == "filebrowserSound" then
+			print("function return:")
+			print(openSoundBrowser())
+		end	
+		--RunConsoleCommand("custom-setPrimarySound", selection)
+	elseif option == "pDamage" then
+		print("setPrimaryDamage", selection)
+		RunConsoleCommand("custom-setPrimaryDamage", selection)
+	elseif option == "pSpread" then
+		print("", selection)
+	RunConsoleCommand("custom-", selection)--$$
+	elseif option == "pRounds" then
+		print("setPrimaryShotsperRound", selection)
+		RunConsoleCommand("custom-setPrimaryShotsperRound", selection)
+	elseif option == "sAuto" then
+		print("setSecondaryAutomatic", selection)
+		RunConsoleCommand("custom-setSecondaryAutomatic", selection)
+	elseif option == "sFire" then
+		print("setSecondaryFireRate", selection)
+		RunConsoleCommand("custom-setSecondaryFireRate", selection)
+	elseif option == "sSpeed" then
+		print("setSecondaryProjectileSpeed", selection)
+		RunConsoleCommand("custom-setSecondaryProjectileSpeed", selection)
+	elseif option == "sSound" then
+		print("setSecondarySound", selection)
+		RunConsoleCommand("custom-setSecondarySound", selection)
+	elseif option == "sDamage" then
+		print("setSecondaryDamage", selection)
+		RunConsoleCommand("custom-setSecondaryDamage", selection)
+	elseif option == "sSpread" then
+		print("", selection)
+		RunConsoleCommand("custom-", selection)--$$
+	elseif option == "sRounds" then
+		print("setSecondaryShotsperRound", selection)
+		RunConsoleCommand("custom-setSecondaryShotsperRound", selection)
+	end
+end
+
 function openMenu()
 	local WIDTH = .5
 	local HEIGHT = .5
 
-	RunConsoleCommand("setVars", "scope", -1)
-	
 	local menuFrame = vgui.Create("DFrame")
 	menuFrame:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT)
 	menuFrame:Center()
@@ -64,12 +124,12 @@ function openMenu()
 	--Scopes-----------------------------------------------------
 	local weaponModel = topProperties:CreateRow("Weapon", "Scope")
 	weaponModel:Setup("Combo", {text = "Select Scope..."})
-	local options = {-1, 5, 10, 25, 50, 60}
+	local options = {-1, 5, 10, 25, 50, 75}
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-		if math.floor(data[1]) != -1.00 then
+		if math.floor(data[1]) == -1 then
 			print("resize")
 			botRightPanel:SetSize(0, 0)
 			botLeftPanel:SetSize(ScrW() * WIDTH, ((ScrH() * HEIGHT) * .75) - 30)
@@ -77,7 +137,7 @@ function openMenu()
 			botLeftPanel:SetSize((ScrW() * WIDTH * .5) - 2, ((ScrH() * HEIGHT) * .75) - 30)
 			botRightPanel:SetSize((ScrW() * WIDTH * .5) - 3, ((ScrH() * HEIGHT) * .75) - 30)
 		end
-		RunConsoleCommand("setVars", "scope", data[1])
+		optionSelected("scope", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -94,50 +154,7 @@ function openMenu()
 	end
 	-------------------------------------------------------------
 	]]
-	function openModelBrowser(t)
-		local frame = vgui.Create( "DFrame" )
-		frame:SetSize( 500, 250 )
-		frame:SetSizable( true )
-		frame:Center()
-		frame:MakePopup()
-		frame:SetTitle( "Select a model file" )
 
-		local browser = vgui.Create( "DFileBrowser", frame )
-		browser:Dock( FILL )
-
-		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
-		browser:SetBaseFolder( "models" ) -- The root folder
-		browser:SetFileTypes( "*.mdl" )
-		browser:SetOpen( true ) -- Open the tree to show sub-folders
-		browser:SetCurrentFolder( "persist" ) -- Show files from persist
-
-		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
-			RunConsoleCommand("setVars", t .. "Shot", path)
-			return path 			
-		end
-	end
-	
-	--Primary projectile entity----------------------------------
-	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Model")
-	weaponModel:Setup("Combo", {text = "Select Model..."})
-	local options = {"Baby Doll", "Chair", "Skull", "Sink", "Select Your Own"}
-	local models = {}
-	models["Baby Doll"] = "models/props_c17/doll01.mdl"
-	models["Chair"] = "models/props_wasteland/controlroom_chair001a.mdl"
-	models["Skull"] = "models/Gibs/HGIBS.mdl"
-	models["Sink"] = "models/props_interiors/SinkKitchen01a.mdl"
-	for i, v in pairs(options) do
-		weaponModel:AddChoice(options[i], {options[i]})
-	end
-	weaponModel.DataChanged = function(self, data)
-		if data[1] == "Select Your Own" then
-			openModelBrowser("p")
-		else
-			RunConsoleCommand("setVars", "pShot", models[data[1]])
-		end
-	end
-	-------------------------------------------------------------
-	
 	--Primary Fire Rate------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
@@ -146,7 +163,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pFireRate", data[1])
+		optionSelected("pFire", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -158,10 +175,10 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pSpeed", data[1])
+		optionSelected("pSpeed", data[1])
 	end
 	-------------------------------------------------------------
-	function openSoundBrowser(t)
+	function openSoundBrowser()
 		RunConsoleCommand("StopSound")
 		local frame = vgui.Create( "DFrame" )
 		frame:SetSize( 500, 250 )
@@ -181,7 +198,7 @@ function openMenu()
 		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
 			print("path in openSoundBrowser")
 			print(path)
-			RunConsoleCommand("setVars", t .. "Sound", string.sub(path, 6))
+			RunConsoleCommand("custom-setPrimarySound", string.sub(path, 6))
 			surface.PlaySound(string.sub(path, 6))
 			return path 			
 		end
@@ -197,7 +214,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	openSoundBrowser("p")
+		optionSelected("pSound", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -209,7 +226,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pDamage", data[1])
+		optionSelected("pDamage", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -221,7 +238,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pSpread", data[1])
+		optionSelected("pSpread", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -233,11 +250,10 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pShotsPerRound", data[1])
+		optionSelected("pRounds", data[1])
 	end
 	-------------------------------------------------------------
 
-	--[[
 	--Clip Size--------------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Clip Size")
 	weaponModel:Setup("Combo", {text = "Select Clip Size..."})
@@ -248,7 +264,6 @@ function openMenu()
 	weaponModel.DataChanged = function(self, data)
 		optionSelected("clip", data[1])
 	end
-	--]]
 	-------------------------------------------------------------
 
 	--END OF BOTTOM LEFT PANEL===================================
@@ -265,23 +280,6 @@ function openMenu()
 	-------------------------------------------------------------
 	]]
 
-	--Secondary projectile entity----------------------------------
-	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Projectile Model")
-	weaponModel:Setup("Combo", {text = "Select Model..."})
-	local options = {"Baby Doll", "Chair", "Skull", "Sink"}
-	local models = {}
-	models["Baby Doll"] = "models/props_c17/doll01.mdl"
-	models["Chair"] = "models/props_wasteland/controlroom_chair001a.mdl"
-	models["Skull"] = "models/Gibs/HGIBS.mdl"
-	models["Sink"] = "models/props_interiors/SinkKitchen01a.mdl"
-	for i, v in pairs(options) do
-		weaponModel:AddChoice(options[i], {options[i]})
-	end
-	weaponModel.DataChanged = function(self, data)
-		RunConsoleCommand("setVars", "sShot", models[data[1]])
-	end
-	-------------------------------------------------------------
-	
 	--Secondary Fire Rate----------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
@@ -290,7 +288,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sFireRate", data[1])
+		optionSelected("sFire", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -302,7 +300,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sSpeed", data[1])
+		optionSelected("sSpeed", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -314,7 +312,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	openSoundBrowser("s")
+		optionSelected("sSound", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -326,7 +324,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sDamage", data[1])
+		optionSelected("sDamage", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -338,7 +336,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sSpread", data[1])
+		optionSelected("sSpread", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -350,7 +348,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sShotsPerRound", data[1])
+		optionSelected("sRounds", data[1])
 	end
 	-------------------------------------------------------------
 

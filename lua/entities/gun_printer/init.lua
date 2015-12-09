@@ -20,7 +20,7 @@ end
 
 function ENT:Initialize()
 
-	self:SetModel( "models/props/cs_office/computer.mdl" )
+	self:SetModel( "models/props_office/computer_monitor_01.mdl" )
 	self:PhysicsInit( SOLID_VPHYSICS )      -- Make us work with physics,
 	self:SetMoveType( MOVETYPE_VPHYSICS )   -- after all, gmod is a physics
 	self:SetSolid( SOLID_VPHYSICS )         -- Toolbox
