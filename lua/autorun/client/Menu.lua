@@ -1,9 +1,13 @@
+-- File to create user menu
+
 function openMenu()
+	-- Menu size, with respect to window
 	local WIDTH = .5
 	local HEIGHT = .5
 
 	RunConsoleCommand("setVars", "scope", -1)
-	
+
+	-- initial settings
 	local menuFrame = vgui.Create("DFrame")
 	menuFrame:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT)
 	menuFrame:Center()
@@ -13,6 +17,7 @@ function openMenu()
 	menuFrame:ShowCloseButton(true)
 	menuFrame:MakePopup()
 
+	-- layout setup
 	local topPanel = vgui.Create("DPanel", menuFrame)
 	topPanel:SetPos(0, 25)
 	topPanel:SetSize(ScrW() * WIDTH, ScrH() * HEIGHT * .25)
@@ -69,6 +74,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
+		-- Hide secondary menu if scope is selected
 		if math.floor(data[1]) != -1.00 then
 			print("resize")
 			botRightPanel:SetSize(0, 0)
@@ -94,6 +100,7 @@ function openMenu()
 	end
 	-------------------------------------------------------------
 	]]
+	-- model browser for projectiles
 	function openModelBrowser(t)
 		local frame = vgui.Create( "DFrame" )
 		frame:SetSize( 500, 250 )
@@ -105,18 +112,18 @@ function openMenu()
 		local browser = vgui.Create( "DFileBrowser", frame )
 		browser:Dock( FILL )
 
-		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
-		browser:SetBaseFolder( "models" ) -- The root folder
+		browser:SetPath( "GAME" )
+		browser:SetBaseFolder( "models" ) -- root folder
 		browser:SetFileTypes( "*.mdl" )
-		browser:SetOpen( true ) -- Open the tree to show sub-folders
-		browser:SetCurrentFolder( "persist" ) -- Show files from persist
+		browser:SetOpen( true ) -- show sub folders?
+		browser:SetCurrentFolder( "persist" )
 
 		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
 			RunConsoleCommand("setVars", t .. "Shot", path)
-			return path 			
+			return path
 		end
 	end
-	
+
 	--Primary projectile entity----------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Model")
 	weaponModel:Setup("Combo", {text = "Select Model..."})
@@ -126,6 +133,7 @@ function openMenu()
 	models["Chair"] = "models/props_wasteland/controlroom_chair001a.mdl"
 	models["Skull"] = "models/Gibs/HGIBS.mdl"
 	models["Sink"] = "models/props_interiors/SinkKitchen01a.mdl"
+	-- add models to menu
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
@@ -137,16 +145,17 @@ function openMenu()
 		end
 	end
 	-------------------------------------------------------------
-	
+
 	--Primary Fire Rate------------------------------------------
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
 	local options = {.1, .2, .5, 1}
+	-- add options to menu
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pFireRate", data[1])
+		RunConsoleCommand("setVars", "pFireRate", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -154,11 +163,12 @@ function openMenu()
 	local weaponModel = botLeftProperties:CreateRow("Primary Weapon", "Projectile Speed")
 	weaponModel:Setup("Combo", {text = "Select Projectile Speed..."})
 	local options = {1, 20, 50, 100, 250, 500, 2000}
+	-- add options to menu
 	for i, v in pairs(options) do
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pSpeed", data[1])
+		RunConsoleCommand("setVars", "pSpeed", data[1])
 	end
 	-------------------------------------------------------------
 	function openSoundBrowser(t)
@@ -173,17 +183,17 @@ function openMenu()
 		local browser = vgui.Create( "DFileBrowser", frame )
 		browser:Dock( FILL )
 
-		browser:SetPath( "GAME" ) -- The access path i.e. GAME, LUA, DATA etc.
-		browser:SetBaseFolder( "sound" ) -- The root folder
-		browser:SetOpen( true ) -- Open the tree to show sub-folders
-		browser:SetCurrentFolder( "persist" ) -- Show files from persist
+		browser:SetPath( "GAME" )
+		browser:SetBaseFolder( "sound" ) -- root folder
+		browser:SetOpen( true ) -- show sub-folders?
+		browser:SetCurrentFolder( "persist" )
 
 		function browser:OnSelect( path, pnl ) -- Called when a file is clicked
 			print("path in openSoundBrowser")
 			print(path)
 			RunConsoleCommand("setVars", t .. "Sound", string.sub(path, 6))
 			surface.PlaySound(string.sub(path, 6))
-			return path 			
+			return path
 		end
 	end
 
@@ -193,11 +203,12 @@ function openMenu()
 	weaponModel:Setup("Combo", {text = "Select Sound..."})
 	local options = weapons.GetList() --TODO: ad table of all sounds
 	weaponModel:AddChoice("Select your own", {"filebrowserSound"} )
+	-- add options to menu
 	for key,value in pairs(options) do
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	openSoundBrowser("p")
+		openSoundBrowser("p")
 	end
 	-------------------------------------------------------------
 
@@ -209,7 +220,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pDamage", data[1])
+		RunConsoleCommand("setVars", "pDamage", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -221,7 +232,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pSpread", data[1])
+		RunConsoleCommand("setVars", "pSpread", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -233,7 +244,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "pShotsPerRound", data[1])
+		RunConsoleCommand("setVars", "pShotsPerRound", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -281,7 +292,7 @@ function openMenu()
 		RunConsoleCommand("setVars", "sShot", models[data[1]])
 	end
 	-------------------------------------------------------------
-	
+
 	--Secondary Fire Rate----------------------------------------
 	local weaponModel = botRightProperties:CreateRow("Secondary Weapon", "Fire Rate")
 	weaponModel:Setup("Combo", {text = "Select Fire Rate..."})
@@ -290,7 +301,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sFireRate", data[1])
+		RunConsoleCommand("setVars", "sFireRate", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -302,7 +313,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sSpeed", data[1])
+		RunConsoleCommand("setVars", "sSpeed", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -314,7 +325,7 @@ function openMenu()
 		weaponModel:AddChoice(value["ViewModel"], {value["ViewModel"]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	openSoundBrowser("s")
+		openSoundBrowser("s")
 	end
 	-------------------------------------------------------------
 
@@ -326,7 +337,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sDamage", data[1])
+		RunConsoleCommand("setVars", "sDamage", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -338,7 +349,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sSpread", data[1])
+		RunConsoleCommand("setVars", "sSpread", data[1])
 	end
 	-------------------------------------------------------------
 
@@ -350,7 +361,7 @@ function openMenu()
 		weaponModel:AddChoice(options[i], {options[i]})
 	end
 	weaponModel.DataChanged = function(self, data)
-	RunConsoleCommand("setVars", "sShotsPerRound", data[1])
+		RunConsoleCommand("setVars", "sShotsPerRound", data[1])
 	end
 	-------------------------------------------------------------
 

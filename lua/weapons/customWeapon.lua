@@ -1,3 +1,6 @@
+-- file to create the custom Weapon
+
+-- basic settings
 SWEP.PrintName = "Custom Weapon"
 SWEP.Author = "BF, RH, JJ, TT"
 SWEP.Insructions = "Do stuff."
@@ -25,6 +28,7 @@ SWEP.WorldModel				= ""
 SWEP.ViewModelFOV			= 54
 SWEP.UseHands				= true
 
+-- variables for changable settings
 local vars = {}
 vars["pShot"] = "models/props_c17/doll01.mdl"
 vars["sShot"] = "models/props_c17/doll01.mdl"
@@ -45,12 +49,12 @@ vars["sDamage"] = 10
 
 
 
-
+-- initalize weapon
 function SWEP:Initialize()
 	self:SetHoldType( "fist" )
 end
 
-function setVars1(ply, cmd, args) 
+function setVars1(ply, cmd, args)
 	print(args[1] .. ":  " .. args[2])
 	if args[1] == "pAuto" then
 		SWEP.Primary.Automatic = args[2]
@@ -58,23 +62,26 @@ function setVars1(ply, cmd, args)
 		SWEP.Secondary.Automatic = args[2]
 	end
 	print(vars["zoomed"])
-			
+
 	vars[args[1]] = args[2]
 end
 concommand.Add("setVars", setVars1)
 
-
+-- secondary attach function
 function SWEP:SecondaryAttack()
 	print(vars["scope"])
+
+	-- if no scope, shoot weapon
 	if tonumber(vars["scope"]) == -1 then
+		-- animate
 		local anim = "fists_right"
 		self.Owner:SetFOV( 0, 0.1 )
 
 		local vm = self.Owner:GetViewModel()
 		vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
 
-		self.Weapon:SetNextPrimaryFire( CurTime() + vars["sFireRate"] )
-		self:Shoot("s")
+		self.Weapon:SetNextPrimaryFire( CurTime() + vars["sFireRate"] ) -- wait for next fire
+		self:Shoot("s") -- shoot weapon
 	else
 		if (!vars["zoomed"]) then -- The player is not zoomed in
 			vars["zoomed"] = true -- Now he is
@@ -90,16 +97,17 @@ function SWEP:SecondaryAttack()
 	end
 end
 
-
+-- primary attack function
 function SWEP:PrimaryAttack()
 	self.Owner:SetAnimation( PLAYER_ATTACK1 )
 
+	-- animate
 	local anim = "fists_left"
 	local vm = self.Owner:GetViewModel()
 	vm:SendViewModelMatchingSequence( vm:LookupSequence( anim ) )
 
 	self.Weapon:SetNextPrimaryFire( CurTime() + vars["pFireRate"] )
-	self:Shoot("p")
+	self:Shoot("p") -- shoot weapon
 end
 
 function hit(ent, data)
@@ -108,39 +116,44 @@ function hit(ent, data)
 	end
 end
 
+-- remove entity from world
 function delete(ent)
 	ent:Remove()
 end
 
-
+-- shoot weapon
 function SWEP:Shoot(t)
 	self:EmitSound(vars[t .. "Sound"])
 
+	-- for each round
 	for i=1, vars[t .. "ShotsPerRound"] do
+		-- if called by the client, or entity cannot be created, return
 		if ( CLIENT ) then return end
 		local ent = ents.Create( "prop_physics" )
 		if ( !IsValid( ent ) ) then return end
 
+		-- initialize and spawn model
 		ent:SetModel( vars[t .. "Shot"] )
-
 		ent:SetPos( self.Owner:EyePos() + ( self.Owner:GetAimVector() * 16 ) )
-
 		ent:SetAngles( self.Owner:EyeAngles())
-
 		ent:Spawn()
+
+		-- apply physics
 		local phys = ent:GetPhysicsObject()
 		if ( !IsValid( phys ) ) then ent:Remove() return end
 		ent:AddCallback("PhysicsCollide", hit)
-		local velocity = self.Owner:GetAimVector()
 
+		-- add vector for speed/direction
+		local velocity = self.Owner:GetAimVector()
 		spread = vars[t .. "Spread"] * .01
 		velocity:Add(Vector(math.random(-spread, spread), math.random(-spread, spread), math.random(-spread, spread)))
-
 		velocity = velocity * 50
 		phys:ApplyForceCenter( velocity * vars[t .. "Speed"] )
 
+		-- create timer to delete prop after 10 seconds
 		timer.Create("delete" .. math.random(1, 100000), 10, 1, function() delete(ent) end)
 
+		-- spawn and add to cleanup menu
 		cleanup.Add( self.Owner, "props", ent )
 		undo.Create( "Projectile" )
 		undo.AddEntity( ent )
@@ -149,7 +162,6 @@ function SWEP:Shoot(t)
 	end
 end
 
-
 local lastReload = os.time()
 
 function SWEP:Reload()
@@ -157,7 +169,6 @@ function SWEP:Reload()
 	lastReload = os.time()
 	self:Shoot( "models/props_junk/watermelon01.mdl", 1)
 end
-
 
 function SWEP:Deploy()
 	local vm = self.Owner:GetViewModel()

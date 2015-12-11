@@ -1,3 +1,4 @@
+-- testing purposes
 function GivePlayerAWeapon( ply, cmd, args )
 	if args[1] == "jump" then
 		ply:SetJumpPower(1500)
